@@ -1,16 +1,17 @@
-"use server";
 import React from 'react'
 import Navbar from '../../components/Navbar'
 
 const StudentJobs = async () => {
-    // const res = await fetch("https://localhost:3000/students/jobs", {
-    //     method: "GET",
-    // });
-    // if(res.status === 401 || res.status === 403){
-    //     throw new Error("Unauthorized");
-    //     useRouter().push("/Login");
-    // }
-    // const data = await res.json();
+  const res = await fetch("http://localhost:3000/api/jobs", {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch jobs");
+  }
+
+  const jobs = await res.json();
+
     
     const desc = "Lorem ipsum dolor sit amet consectetur adipisicing elit..."
     return (
