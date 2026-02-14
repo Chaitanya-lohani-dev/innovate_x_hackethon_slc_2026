@@ -1,12 +1,32 @@
 "use client";
 import React from "react";
+import { login } from "@/lib/api";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-
+    const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        
+        try {
+            const res = await login(email, password);
+            if (res.status === 200){
+                
+                setTimeout(() => router.push('/job'), 2000);
+            }
+        }
+        catch (err) {
+            setError("Invalid email or password");
+        }
+    }
   return (
     <>
 

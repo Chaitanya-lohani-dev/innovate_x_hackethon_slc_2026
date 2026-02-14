@@ -42,7 +42,7 @@ async function redisCommand(args: Array<string | number>) {
     return data.result ?? null;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     if (!UPSTASH_URL || !UPSTASH_TOKEN) {
         return NextResponse.next();
     }
@@ -76,3 +76,5 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: ["/api/jobs/student/application/:path*"],
 };
+
+export default proxy;

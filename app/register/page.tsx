@@ -1,10 +1,43 @@
 "use client";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import { registerSchema } from "@/lib/validation";
+import { register } from "@/lib/api";
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+                            
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const data = {
+            name: formData.get("name") as string,
+            email: formData.get("email") as string,
+            DOB: formData.get("DOB") as string,
+            password: formData.get("password") as string,
+            role: formData.get("role") as string,
+            organisation: formData.get("organisation") as string,
+        };
+
+        const validation = registerSchema.safeParse(data);
+        if (!validation.success) {
+            setError(validation.error.issues[0].message);
+            return;
+        }
+
+        // proceed with successful registration (e.g., send to API)
+        // console.log("Validated data:", validation.data);
+        const res = await register(data);
+        if (res.status === 201) {
+            setError("Registration successful! Redirecting to login...");
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 2000);
+        } else {
+            setError("Registration failed. Please try again.");
+        }
+    }
 
     return (
         <>
@@ -18,7 +51,7 @@ const Register = () => {
                         Create Account
                     </h2>
 
-                    <form className="space-y-5">
+                    <form className="space-y-5" onSubmit={handleSubmit}>
 
                         {/* Full Name */}
                         <div>
@@ -26,6 +59,7 @@ const Register = () => {
                                 Full Name
                             </label>
                             <input
+                                name="name"
                                 type="text"
                                 placeholder="Enter your name"
                                 className="w-full px-4 py-2 bg-black border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -38,6 +72,7 @@ const Register = () => {
                                 Email
                             </label>
                             <input
+                                name="email"
                                 type="email"
                                 placeholder="Enter your email"
                                 className="w-full px-4 py-2 bg-black border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -49,6 +84,7 @@ const Register = () => {
                                 Date of Birth
                             </label>
                             <input
+                                name="DOB"
                                 type="date"
                                 className="w-full px-4 py-2 bg-black border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
                             />
@@ -83,15 +119,16 @@ const Register = () => {
                             </div>
                         </div>
                         <div>
-                                    <label className="block text-sm text-gray-300 mb-1">
-                                        Organization Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter your name"
-                                        className="w-full px-4 py-2 bg-black border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                    />
-                                </div>
+                            <label className="block text-sm text-gray-300 mb-1">
+                                Organization Name
+                            </label>
+                            <input
+                                name="organisation"
+                                type="text"
+                                placeholder="Enter your name"
+                                className="w-full px-4 py-2 bg-black border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            />
+                        </div>
 
                         {/* Password */}
                         <div>
@@ -101,6 +138,7 @@ const Register = () => {
 
                             <div className="relative">
                                 <input
+                                    name="password"
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Enter password"
                                     className="w-full px-4 py-2 pr-12 bg-black border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -124,6 +162,7 @@ const Register = () => {
 
                             <div className="relative">
                                 <input
+                                    name="confirmPassword"
                                     type={showConfirm ? "text" : "password"}
                                     placeholder="Confirm password"
                                     className="w-full px-4 py-2 pr-12 bg-black border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
