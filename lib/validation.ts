@@ -10,5 +10,6 @@ export const registerSchema = z.object({
     email: z.string().email(),
     DOB:  z.date(),
     password: z.string().min(6),
-    role: z.enum(['student', 'HR']),
+    role: z.enum(['student', 'HR', 'admin']),
+    organisation: z.string().min(1),
 });

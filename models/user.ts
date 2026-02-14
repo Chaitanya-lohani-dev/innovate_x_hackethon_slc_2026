@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
     },
     organisation: {
         type: String,
+        required: true,
     },
 });
 
