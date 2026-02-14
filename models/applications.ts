@@ -29,3 +29,9 @@ const applicationSchema = new mongoose.Schema({
         type: String,
     },
 });
+
+applicationSchema.index({ userId: 1, jobId: 1 }, { unique: true });
+
+const Application = mongoose.models.Application || mongoose.model('Application', applicationSchema);
+
+export default Application;

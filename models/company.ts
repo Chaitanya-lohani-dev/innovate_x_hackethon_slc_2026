@@ -22,3 +22,7 @@ const companySchema = new mongoose.Schema({
         type: String,
     },
 });
+
+const Company = mongoose.models.Company || mongoose.model('Company', companySchema);
+
+export default Company;
