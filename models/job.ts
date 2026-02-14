@@ -27,6 +27,10 @@ const jobSchema = new mongoose.Schema({
     updatedBy: {
         type: String
     },
+    location: {
+        type: String,
+        required: true,
+        },
 });
 
 const Job = mongoose.models.Job || mongoose.model('Job', jobSchema);

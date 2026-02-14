@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { required } from "zod/mini";
 
 const companySchema = new mongoose.Schema({
     name: {
@@ -20,6 +21,10 @@ const companySchema = new mongoose.Schema({
     },
     website: {
         type: String,
+    },
+    phone: {
+        type: String,
+        required: true,
     },
 });
 

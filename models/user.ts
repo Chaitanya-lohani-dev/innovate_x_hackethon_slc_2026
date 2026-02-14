@@ -33,6 +33,9 @@ const userSchema = new mongoose.Schema({
     refreshToken: {
         type: String,
     },
+    organisation: {
+        type: String,
+    },
 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
